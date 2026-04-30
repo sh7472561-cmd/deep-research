@@ -25,7 +25,7 @@ from services.notion import (
     create_article_page,
 )
 
-# Path to the user profile / standing instructions
+# Path to the user profile / standing instructions (used as fallback for local dev)
 INSTRUCTIONS_PATH = "research_instructions.md"
 
 # Valid Tags for the Articles DB (keep in sync with Notion schema)
@@ -38,11 +38,16 @@ VALID_TAGS = [
 
 
 def _load_instructions() -> str:
+    # Prefer the environment variable (set from GitHub secret)
+    env_instructions = os.environ.get("RESEARCH_INSTRUCTIONS", "").strip()
+    if env_instructions:
+        return env_instructions
+    # Fall back to file for local development
     try:
         with open(INSTRUCTIONS_PATH) as f:
             return f.read().strip()
     except FileNotFoundError:
-        return "(No research_instructions.md found — using defaults.)"
+        return "(No research instructions found — using defaults.)"
 
 
 def _expand_queries(topic: str, instructions: str) -> list[str]:
