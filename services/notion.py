@@ -100,12 +100,12 @@ def _markdown_to_blocks(text: str) -> list:
 
 
 def get_pending_research_items() -> list[dict]:
-    """Return Inbox Items with Priority Level = 'New Deep Research', not archived."""
+    """Return Inbox Items with Priority Level = 'In Progress', not archived."""
     rows = _query_db(
         INBOX_ITEMS_DB,
         filter_={
             "and": [
-                {"property": "Priority Level", "select": {"equals": "New Deep Research"}},
+                {"property": "Priority Level", "select": {"equals": "In Progress"}},
                 {"property": "Archived", "checkbox": {"equals": False}},
             ]
         },
