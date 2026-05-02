@@ -109,6 +109,8 @@ def get_pending_research_items() -> list[dict]:
                 {"property": "Archived", "checkbox": {"equals": False}},
             ]
         },
+        sorts=[{"property": "Created Date", "direction": "ascending"}],
+        limit=1,
     )
     return [{"id": row["id"], "name": _prop(row, "Name")} for row in rows if _prop(row, "Name")]
 
